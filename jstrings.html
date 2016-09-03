@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<title>Convert string to character code | DigiP</title>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<style type="text/css">
+body {
+font-family:tahoma,"open sans",open-sans,arial,sans-serif;
+font-size: 18px;
+background: #112435;
+color: #3a8ba3;
+line-height: 1.5em;
+}
+input[type="text"],#tarea {
+color: #f3681d;
+background-color: #004163;
+padding:5px;
+border: solid #fff 1px;
+margin:0 10px 0 0;
+font-size: 18px;
+}
+
+button {
+border:solid #fff 1px;
+border-radius:12px;
+padding: 5px 20px;
+color: #fff;
+background-color: #a12435;
+font-size: 18px;
+}
+
+button:hover {
+background-color: #aa1135;
+cursor:pointer;	
+}
+
+.foo {
+display:table;
+width:80%;
+margin:20px auto;
+
+}
+
+.form {
+display:table;
+margin:0 auto;
+}
+
+.row {
+display:table-row;
+vertical-align: top;
+}
+.col {
+display:table-cell;
+vertical-align: top;
+padding:30px;
+width:50%;
+}
+#tarea {
+position:relative;
+margin:10px auto;
+width:100%;
+padding:10px;
+overflow:auto;
+min-height:200px;
+}
+
+#matthew419 {
+border: dashed #fff 1px;
+padding: 10px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="foo">
+<h1>Convert String to charCode</h1>
+<p>This is a small demo I created while working on a CTF to convert strings to charCode.</p>
+	<div class="row">
+		<div class="col">
+			<div class="form">
+			<label>Enter a string to convert:<br /> <input type="text" id="string" name="myString" value="Poop" /><button onClick="foo()">Convert</button></label>
+
+				<br /><br />
+				Converted code will change here	:<br />
+				<div id="matthew419">
+				Follow me, and I will make you fishers of men...
+				</div><! -- end verse -->
+				
+			</div><! -- end form -->
+		</div><! -- end col -->
+		
+		<div class="col">
+		    This textarea will change, to reflect the decoded string form the set of converted code on the left. While it may appear all it is doing is copying the input from the left, it's actually converting the left input to charCode and then using "String.fromCharCode.apply(String,code)" to convert it back. This is just a debugger area.
+			<textarea width="400"  id="tarea">This will change.</textarea>
+		</div><! -- end col -->
+	</div><! -- end row -->
+	
+	<div class="row">
+		<div class="col">
+			<div class="form">
+				<label>Enter a string for converting to base64:<br /> 
+				<input type="text" id="b64e" name="myString" value="Poop" /><button onClick="foo2()">Convert</button>
+				</label>
+			</div><! -- end form -->
+		</div>
+		<div class="col">
+			<div class="form">
+				<label>Enter a string for converting from base64:<br /> 
+				<input type="text" id="b64d" name="myString" value="UG9vcA==" /><button onClick="foo3()">Convert</button>
+				</label>
+			</div><! -- end form -->
+		</div>
+	</div>
+
+</div><! -- end foo -->
+
+
+
+
+
+<script type="text/javascript">
+	/* This script will help convert strings of text to charCode for obfuscation */
+	function foo(){
+	var str = document.getElementById("string").value;
+	var l = str.length;
+	var text = "";
+	var i;
+	
+		for (i = 0; i < l; i++) {
+			text += str.charCodeAt(i)+",";
+		}
+		document.getElementById("matthew419").innerHTML = text.substring(0, text.length - 1);
+		
+	//fruits.valueOf()
+	var code = text.substring(0, text.length - 1);
+	var x = JSON.parse("[" + code + "]");
+	/* 
+	// debug
+	alert("Codes : " + x);
+	*/
+	
+	var j = String.fromCharCode.apply(String,x); // we call this in as an array vs it's original output of a string. This lets us parse each charCode.
+
+	/* For dumping code to the textarea without executing actual <script> code which would break the page.
+	< - \u003c
+	> - \u003e
+	" - \u0022
+	' - \u0027
+	\ - \u005c
+	& - \u0026
+	
+	*/
+	document.getElementById("tarea").value = "Original message decoded: " + j + "\r\n\r\nUse the following in your XSS CTF's: \r\n\r\n\u003cscript\u003edocument.write(String.fromCharCode("+code+"));\u003c/script\u003e";
+	 	
+	}//foo();
+
+
+	function foo2(){
+		var str = document.getElementById("b64e").value;
+		document.getElementById("tarea").value = btoa(str);
+	}
+	
+	function foo3(){
+		var str = document.getElementById("b64d").value;
+		document.getElementById("tarea").value = atob(str);
+	}
+
+</script>
+
+</body>
+</html>
